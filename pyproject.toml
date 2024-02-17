@@ -1,0 +1,24 @@
+[project]
+name = "coreofintepreter"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [{ name = "Fledge Shiu", email = "xzk0701@gmail.com" }]
+dependencies = [
+    "debugpy>=1.8.1",
+    "pyright>=1.1.350",
+    "ruff>=0.2.1",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+start = "python -m coreofintepreter"
