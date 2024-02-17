@@ -21,9 +21,9 @@ Bottom to Up
 
 Interpreter -> +
               / \
-             1   6 (2*3)
+             1   7 (2*3.5)
 
-Interpreter -> 7 (1+6)
+Interpreter -> 8 (1+7)
 
 
 Next:
