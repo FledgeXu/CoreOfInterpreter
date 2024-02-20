@@ -16,6 +16,8 @@ Parser -> AST(Abstract Syntax Tree)
             / \
            2  3.5
 
+S-expression: (+ 1 (* 2 3.5))
+
 Recursive Evaluation:
 Bottom to Up
 
@@ -25,6 +27,7 @@ Interpreter -> +
 
 Interpreter -> 8 (1+7)
 
+https://www.youtube.com/watch?v=OKcCiMV2dQA&list=PLre5AT9JnKShBOPeuiD9b-I4XROIJhkIU&index=155
 
 Next:
 ./slice2.txt
