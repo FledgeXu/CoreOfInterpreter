@@ -14,84 +14,84 @@ class Parser:
         self.__tokens = tokens
         self.__current = 0
 
-    def peek(self, offset=0) -> Token:
-        if not self.is_at_end(offset):
+    def __peek(self, offset=0) -> Token:
+        if not self.__is_at_end(offset):
             return self.__tokens[self.__current + offset]
         return Token(TokenType.EOF, "", None, 0)
 
-    def previous(self) -> Token:
-        return self.peek(-1)
+    def __previous(self) -> Token:
+        return self.__peek(-1)
 
-    def advance(self) -> None:
+    def __advance(self) -> None:
         self.__current += 1
 
-    def take(self) -> Token:
-        token = self.peek()
-        self.advance()
+    def __take(self) -> Token:
+        token = self.__peek()
+        self.__advance()
         return token
 
-    def is_at_end(self, offset=0) -> bool:
+    def __is_at_end(self, offset=0) -> bool:
         return self.__tokens[self.__current + offset].type == TokenType.EOF
 
-    def match(self, *types: TokenType) -> bool:
-        token = self.peek()
+    def __match(self, *types: TokenType) -> bool:
+        token = self.__peek()
         if token.type in types:
-            self.advance()
+            self.__advance()
             return True
         return False
 
-    def consume(self, type: TokenType) -> None:
-        token = self.peek()
+    def __consume(self, type: TokenType) -> None:
+        token = self.__peek()
         if token.type == type:
-            self.advance()
+            self.__advance()
             return
         raise ValueError(f"{token.lexeme} should be {type}, instead of {token.type}")
 
-    def number(self):
-        token = self.take()
+    def __number(self):
+        token = self.__take()
         if token.type != TokenType.NUMBER:
             raise ValueError(
                 f"{token.lexeme} should be {TokenType.NUMBER}, instead of {token.type}"
             )
         return NumberExpression(token)
 
-    def primary(self) -> Expression:
-        if self.match(TokenType.LEFT_PARENT):
-            expr = self.term()
-            self.consume(TokenType.RIGHT_PARENT)
+    def __primary(self) -> Expression:
+        if self.__match(TokenType.LEFT_PARENT):
+            expr = self.__term()
+            self.__consume(TokenType.RIGHT_PARENT)
             return expr
-        return self.number()
+        return self.__number()
 
-    def unary(self) -> Expression:
-        if self.match(TokenType.MINUS):
-            op = self.previous()
-            return UnaryExpression(op, self.unary())
-        return self.primary()
+    def __unary(self) -> Expression:
+        if self.__match(TokenType.MINUS):
+            op = self.__previous()
+            return UnaryExpression(op, self.__unary())
+        return self.__primary()
 
-    def factor(self) -> Expression:
-        expr = self.unary()
-        while self.match(TokenType.STAR, TokenType.SLASH):
-            op = self.previous()
-            right = self.unary()
+    def __factor(self) -> Expression:
+        expr = self.__unary()
+        while self.__match(TokenType.STAR, TokenType.SLASH):
+            op = self.__previous()
+            right = self.__unary()
             expr = BinaryExpression(op, expr, right)
         return expr
 
-    def term(self) -> Expression:
-        expr = self.factor()
-        while self.match(TokenType.PLUS, TokenType.MINUS):
-            op = self.previous()
-            right = self.factor()
+    def __term(self) -> Expression:
+        expr = self.__factor()
+        while self.__match(TokenType.PLUS, TokenType.MINUS):
+            op = self.__previous()
+            right = self.__factor()
             expr = BinaryExpression(op, expr, right)
         return expr
 
-    def expression_statement(self) -> Statement:
-        expr = self.term()
-        self.consume(TokenType.SEMICOLON)
+    def __expression_statement(self) -> Statement:
+        expr = self.__term()
+        self.__consume(TokenType.SEMICOLON)
         return Statement(expr)
 
     # The start of story
     def parse(self) -> list[Statement]:
         statements = list()
-        while not self.is_at_end():
-            statements.append(self.expression_statement())
+        while not self.__is_at_end():
+            statements.append(self.__expression_statement())
         return statements
