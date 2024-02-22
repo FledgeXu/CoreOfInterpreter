@@ -1,4 +1,4 @@
-from src.coreofintepreter.types import (
+from coreofintepreter.types import (
     BinaryExpression,
     Expression,
     NumberExpression,
@@ -14,10 +14,10 @@ class Interpreter:
 
     def eval(self, expr: Expression) -> float:
         match expr:
-            case binary if isinstance(binary, BinaryExpression):
-                left = self.eval(binary.left)
-                right = self.eval(binary.right)
-                match binary.op.type:
+            case BinaryExpression(op, left_expr, right_expr):
+                left = self.eval(left_expr)
+                right = self.eval(right_expr)
+                match op.type:
                     case TokenType.PLUS:
                         return left + right
                     case TokenType.MINUS:
@@ -27,16 +27,16 @@ class Interpreter:
                     case TokenType.SLASH:
                         return left / right
                     case _:
-                        raise ValueError(f"{binary.op} is not correct binary operator")
-            case unary if isinstance(unary, UnaryExpression):
-                result: float = self.eval(unary.expr)
-                if unary.op.type != TokenType.MINUS:
-                    raise ValueError(f"{unary.op} is not correct unary operator")
+                        raise ValueError(f"{op} is not correct binary operator")
+            case UnaryExpression(op, expr):
+                result: float = self.eval(expr)
+                if op.type != TokenType.MINUS:
+                    raise ValueError(f"{op} is not correct unary operator")
                 return -result
-            case number if isinstance(number, NumberExpression):
-                if not number.value.literal:
-                    raise ValueError(f"{number}'s value is None")
-                return number.value.literal
+            case NumberExpression(value):
+                if not value.literal:
+                    raise ValueError(f"{value}'s value is None")
+                return value.literal
 
         raise ValueError(f"{expr} is not implemented")
 

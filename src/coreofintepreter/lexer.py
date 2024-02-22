@@ -1,4 +1,4 @@
-from src.coreofintepreter.types import Token, TokenType
+from coreofintepreter.types import Token, TokenType
 
 
 OpsType: dict[str, TokenType] = {

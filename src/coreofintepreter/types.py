@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
+from typing import Deque
 
 
 class TokenType(Enum):
@@ -47,3 +48,22 @@ class NumberExpression(Expression):
 @dataclass
 class Statement:
     expr: Expression
+
+
+class Operations(Enum):
+    CONSTANTS = auto()
+    NEGATIVE = auto()
+    ADD = auto()
+    MINUS = auto()
+    MULTIPLY = auto()
+    DIV = auto()
+    RETURN = auto()
+
+
+@dataclass
+class Code:
+    Op: Operations
+    data: float | None
+
+
+Chunks = Deque[Code]

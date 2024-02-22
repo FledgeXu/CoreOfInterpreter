@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Callable
-from src.coreofintepreter.types import (
+from coreofintepreter.types import (
     BinaryExpression,
     Expression,
     NumberExpression,

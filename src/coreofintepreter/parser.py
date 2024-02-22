@@ -1,4 +1,4 @@
-from src.coreofintepreter.types import (
+from coreofintepreter.types import (
     BinaryExpression,
     Expression,
     NumberExpression,

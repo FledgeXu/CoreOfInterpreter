@@ -1,9 +1,11 @@
 import sys
 from coreofintepreter.pratt import Pratt
-from src.coreofintepreter.interpreter import Interpreter
+from coreofintepreter.interpreter import Interpreter
 
-from src.coreofintepreter.lexer import Lexer
-from src.coreofintepreter.parser import Parser
+from coreofintepreter.lexer import Lexer
+from coreofintepreter.parser import Parser
+from coreofintepreter.generator import Generator
+from coreofintepreter.vm import VirtualMachine
 
 
 def repl():
@@ -27,9 +29,13 @@ def run(source_code: str):
         # parser = Parser(tokens)
         parser = Pratt(tokens)
         statements = parser.parse()
-        interpreter = Interpreter(statements)
-        for result in interpreter.cal():
-            print(result)
+        generator = Generator(statements)
+        chunk = generator.generate()
+        vm = VirtualMachine(chunk)
+        vm.run()
+        # interpreter = Interpreter(statements)
+        # for result in interpreter.cal():
+        #     print(result)
     except ValueError as exc:
         print(exc)
 
